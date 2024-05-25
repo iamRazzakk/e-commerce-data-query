@@ -20,7 +20,7 @@ const getProducts = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
-const getProductByIdController = async (req: Request, res: Response) => {
+const getSingleProducts = async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         const product = await productService.getProductById(productId);
@@ -33,5 +33,5 @@ const getProductByIdController = async (req: Request, res: Response) => {
 export const productController = {
     createProductController,
     getProducts,
-
+    getSingleProducts
 }

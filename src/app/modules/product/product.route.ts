@@ -4,6 +4,6 @@ const router = express.Router()
 
 
 router.post('/create-products', productController.createProductController)
-router.post('/', productController.createProductController)
-router.post('/:id', productController.createProductController)
+router.get('/', productController.getProducts)
+router.get('/:id', productController.getSingleProducts)
 export default router
