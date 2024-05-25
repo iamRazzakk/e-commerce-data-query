@@ -15,8 +15,20 @@ const getProductById = async (productId: string) => {
     const product = await productModel.findById(productId);
     return product;
 }
+const updateProductSingleValue = async (_id: string, updatedData: Product) => {
+    const result = await productModel.findByIdAndUpdate(_id, updatedData, {
+        new: true,
+    });
+    return result;
+};
+
+const deleteProductById = async (_id: string) => {
+    return await productModel.findByIdAndDelete(_id);
+}
 export const productService = {
     createOder,
     getAllProducts,
-    getProductById
+    getProductById,
+    updateProductSingleValue,
+    deleteProductById
 }
