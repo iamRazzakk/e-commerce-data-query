@@ -77,10 +77,25 @@ const deleteProduct = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+
+// search
+const productSearch = async (req: Request, res: Response) => {
+    const searchTerm = req.query.searchTerm as string;
+    console.log(searchTerm)
+    const products = await productService.productsSearch(searchTerm)
+    res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        data: products
+    });
+}
+
 export const productController = {
     createProductController,
     getProducts,
     getSingleProducts,
     updateProducts,
-    deleteProduct
+    deleteProduct,
+    productSearch
 }

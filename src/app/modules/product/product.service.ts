@@ -25,10 +25,26 @@ const updateProductSingleValue = async (_id: string, updatedData: Product) => {
 const deleteProductById = async (_id: string) => {
     return await productModel.findByIdAndDelete(_id);
 }
+
+
+const productsSearch = async (searchTerm: string) => {
+    const regex = new RegExp(searchTerm, 'i');
+    return await productModel.find({
+        $or: [
+            { name: regex },
+            { description: regex },
+            { category: regex },
+            { tags: regex }
+        ]
+    });
+};
+
+
 export const productService = {
     createOder,
     getAllProducts,
     getProductById,
     updateProductSingleValue,
-    deleteProductById
+    deleteProductById,
+    productsSearch
 }
