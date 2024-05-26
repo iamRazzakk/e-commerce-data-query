@@ -1,29 +1,61 @@
 import { Request, Response } from "express";
 import { productService } from "./product.service";
-import { productModel } from "./product.model";
+import productSchemaJoi from "./product.validation";
 
 const createProductController = async (req: Request, res: Response) => {
     try {
         const productInfo = req.body
         console.log(productInfo)
-        const result = await productService.createOder(productInfo)
+
+        //  creating schema a validation using Joi
+        const { error, value } = productSchemaJoi.validate(productInfo);
+
+        if (error) {
+            res.status(500).json({
+                success: false,
+                message: "something went wrong",
+                error: error.details,
+            });
+        }
+        const result = await productService.createOder(value);
         res.status(200).json({
             success: true,
             message: "Product created successfully!",
-            data: result
-        })
+            data: result,
+        });
     } catch (error) {
         console.log(error)
     }
 }
+
 const getProducts = async (req: Request, res: Response) => {
     try {
-        const products = await productService.getAllProducts();
-        res.status(200).json({
-            success: true,
-            message: "Products fetched successfully!",
-            data: products
-        });
+
+        const searchTerm = req.query.searchTerm as string;
+        // console.log(searchTerm)
+        if (searchTerm) {
+            const products = await productService.productsSearch(searchTerm)
+            res.status(200).json({
+                success: true,
+                message: `Products matching search term '${searchTerm}' fetched successfully!`,
+                data: products
+            });
+            if (!searchTerm) {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Search term is required" });
+            }
+        } else {
+            const products = await productService.getAllProducts();
+            res.status(200).json({
+                success: true,
+                message: "Products fetched successfully!",
+                data: products
+            });
+        }
+
+
+
     } catch (error) {
         console.error("Error fetching products:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -47,7 +79,19 @@ const updateProducts = async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         const updateProductInfo = req.body;
-        const updatedProduct = await productService.updateProductSingleValue(productId, updateProductInfo);
+
+
+        const { error, value } = productSchemaJoi.validate(updateProductInfo);
+
+        if (error) {
+            res.status(500).json({
+                success: false,
+                message: "something went wrong",
+                error: error.details,
+            });
+        }
+
+        const updatedProduct = await productService.updateProductSingleValue(productId, value);
         console.log(productId, updateProductInfo)
         res.status(200).json({
             success: true,
@@ -78,24 +122,10 @@ const deleteProduct = async (req: Request, res: Response) => {
     }
 }
 
-
-// search
-const productSearch = async (req: Request, res: Response) => {
-    const searchTerm = req.query.searchTerm as string;
-    console.log(searchTerm)
-    const products = await productService.productsSearch(searchTerm)
-    res.status(200).json({
-        success: true,
-        message: `Products matching search term '${searchTerm}' fetched successfully!`,
-        data: products
-    });
-}
-
 export const productController = {
     createProductController,
     getProducts,
     getSingleProducts,
     updateProducts,
     deleteProduct,
-    productSearch
 }

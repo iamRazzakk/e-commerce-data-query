@@ -33,8 +33,8 @@ const productsSearch = async (searchTerm: string) => {
         $or: [
             { name: regex },
             { description: regex },
-            { category: regex },
-            { tags: regex }
+            // { category: regex },
+            // { tags: regex }
         ]
     });
 };
