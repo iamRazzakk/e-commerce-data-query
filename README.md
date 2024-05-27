@@ -19,21 +19,7 @@ cd e-commerce-data-query
 
 ```bash
 npm install
-# or
-yarn install
 ```
-
-## Set Up Environment Variables
-
-Create a .env file in the root directory of the project and add the necessary environment variables. Below is an example of what your .env file should look like:
-
-```plaintext
-PORT=5001
-DATABASE_URL=mongodb+srv://admin-abdurrazzak:e-commerce-project-123@cluster0.pkfik7i.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0
-
-```
-
-Make sure to replace DATABASE_URL=mongodb+srv://admin-abdurrazzak:e-commerce-project-123@cluster0.pkfik7i.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0 with the correct URI if your MongoDB instance is running elsewhere or has a different database name.
 
 ## Compile TypeScript to JavaScript
 
@@ -41,8 +27,6 @@ Since the project is written in TypeScript, you need to compile it to JavaScript
 
 ```bash
 npm run build
-# or
-yarn build
 ```
 
 ## Run the Application
@@ -51,8 +35,6 @@ Once the compilation is done, you can start the application. Use the following c
 
 ```bash
 npm run server:ts
-# or
-yarn server:ts
 ```
 
 # Common Commands
@@ -65,8 +47,6 @@ This command runs the application with ts-node-dev, which automatically restarts
 
 ```bash
 npm run server:ts
-# or
-yarn server:ts
 ```
 
 ### Lint the Code
@@ -75,8 +55,6 @@ To check the code for potential errors and style issues, run:
 
 ```bash
 npm run lint
-# or
-yarn lint
 ```
 
 ### Prettier code format
@@ -85,6 +63,5 @@ Make code alignmentt with Prettier
 
 ```bash
 npm run prettier
-# or
-yarn prettier
+``
 ```
