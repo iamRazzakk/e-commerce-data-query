@@ -35,6 +35,12 @@ const getProducts = async (req: Request, res: Response) => {
         // console.log(searchTerm)
         if (searchTerm) {
             const products = await productService.productsSearch(searchTerm)
+            if (!products.length) {
+                res.status(500).json({
+                    success: false,
+                    message: "Data not found",
+                });
+            }
             res.status(200).json({
                 success: true,
                 message: `Products matching search term '${searchTerm}' fetched successfully!`,
@@ -47,6 +53,7 @@ const getProducts = async (req: Request, res: Response) => {
             }
         } else {
             const products = await productService.getAllProducts();
+            console.log(products, "Product length")
             res.status(200).json({
                 success: true,
                 message: "Products fetched successfully!",
@@ -56,9 +63,10 @@ const getProducts = async (req: Request, res: Response) => {
 
 
 
+
     } catch (error) {
         console.error("Error fetching products:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Products not found" });
     }
 }
 const getSingleProducts = async (req: Request, res: Response) => {
@@ -71,8 +79,10 @@ const getSingleProducts = async (req: Request, res: Response) => {
             data: product
         });
     } catch (error) {
-        console.error("Error fetching product by ID:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({
+            success: false,
+            message: "Product Not match!",
+        });
     }
 }
 const updateProducts = async (req: Request, res: Response) => {
@@ -99,9 +109,12 @@ const updateProducts = async (req: Request, res: Response) => {
             data: updatedProduct
         });
     } catch (error) {
-        console.error("Error updating:", error);
-        res.status(500).json({ message: "Can't update" })
+        res.status(500).json({
+            success: false,
+            message: "Product not update",
+        })
     }
+
 }
 const deleteProduct = async (req: Request, res: Response) => {
     try {

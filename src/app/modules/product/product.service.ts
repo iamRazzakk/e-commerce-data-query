@@ -8,6 +8,7 @@ const createOder = async (productInfo: Product) => {
 }
 const getAllProducts = async () => {
     const products = await productModel.find();
+    console.log(products, "My productsssssssssssssssssssssssss")
     return products;
 }
 
